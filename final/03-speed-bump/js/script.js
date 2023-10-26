@@ -1,0 +1,123 @@
+let foodX;
+let foodY;
+let foodSize = 20;
+
+let snakeSize = 20;
+let snakeSpeedX = 0;
+let snakeSpeedY = 1;
+let snakeX = 0;
+let snakeY = 0;
+
+
+let score = 0;
+let greenTexTimer = 0;
+
+let currentFrameRate = 5;
+
+
+function setup() {
+  createCanvas(400, 400);
+  spawnFood();
+}
+
+function draw() {
+  background(220);
+  frameRate(currentFrameRate)
+  moveSnake();
+  checkFood();
+  drawSnake();
+  drawFood();
+  showScore();
+
+}
+
+function spawnFood() {
+  foodX = random(0, width - foodSize)
+  foodY = random(0, height - foodSize)
+}
+
+function showScore() {
+  textAlign(CENTER);
+
+  if (greenTexTimer > 0) {
+    fill("green")
+    textSize(30);
+  } else {
+    textSize(20);
+    fill("black")
+  }
+
+  text(score, height / 2, width / 2);
+  greenTexTimer--;
+
+}
+
+function checkFood() {
+  const foodSnakeDistance = dist(snakeX, snakeY, foodX, foodY);
+
+  if (foodSnakeDistance < 20) {
+    spawnFood();
+    score++
+    greenTexTimer = 5;
+    currentFrameRate += 1.5;
+  }
+}
+
+function drawFood() {
+  fill(255, 0, 0);
+  noStroke();
+  rect(foodX, foodY, foodSize);
+}
+
+function moveSnake() {
+  snakeX += snakeSpeedX * snakeSize;
+  snakeY += snakeSpeedY * snakeSize;
+
+  if (snakeX >= width + snakeSize) {
+    snakeX = 0;
+  } else if (snakeX <= 0 - snakeSize) {
+    snakeX = height;
+  }
+
+  if (snakeY >= height + snakeSize) {
+    snakeY = 0;
+  } else if (snakeY <= 0 - foodSize) {
+    snakeY = height;
+  }
+}
+
+function drawSnake() {
+  fill(0);
+  rect(snakeX, snakeY, snakeSize);
+
+}
+
+function keyPressed() {
+  switch (keyCode) {
+    case LEFT_ARROW:
+      if (snakeSpeedX !== 1) {
+        snakeSpeedX = -1;
+        snakeSpeedY = 0;
+      }
+      break;
+    case RIGHT_ARROW:
+      if (snakeSpeedX !== -1) {
+        snakeSpeedX = 1;
+        snakeSpeedY = 0;
+      }
+      break;
+    case DOWN_ARROW:
+      if (snakeSpeedY !== -1) {
+        snakeSpeedX = 0;
+        snakeSpeedY = 1;
+      }
+      break;
+    case UP_ARROW:
+      if (snakeSpeedY !== 1) {
+        snakeSpeedX = 0;
+        snakeSpeedY = -1;
+      }
+      break;
+  }
+}
+
