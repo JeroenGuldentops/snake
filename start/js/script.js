@@ -17,15 +17,12 @@ let scoreTimer = 0;
 
 let timeLimit = 60;
 
-//let timeLimit = 60;
-
 let timer;
 
 function setup() {
   createCanvas(400, 400);
   spawnFood();
   spawnSnake();
-  frameRate(initialFrameRate);
 }
 
 function draw() {
@@ -65,12 +62,15 @@ function startTimer(time){
   }
 }
 
+function resetTimer(){
+  timer = 0;
+}
+
 function displayTimer(){
   textSize(15)
   fill('black');
   textAlign(RIGHT);
-  text('Tijd: ' + (timeLimit - floor(timer/1000)), width - 10, 15); 
-  //text('Tijd: ' + floor(timer/1000), width - 10, 15);
+  text('Tijd: ' + (timeLimit - floor(timer/1000)), width - 10, 15);
 }
 
 function endGame(){
@@ -142,7 +142,7 @@ function keyPressed() {
       speedY = 1;
       speedX = 0;
       break;
-      // Pauzeren
+      // Pauzeren (spatiebalk)
     case 32:
       speedX = 0;
       speedY = 0;
@@ -155,6 +155,7 @@ function keyPressed() {
       spawnSnake();
       frameRate(initialFrameRate);
       score = 0;
+      startTimer(timeLimit);
       break;
 
   }
